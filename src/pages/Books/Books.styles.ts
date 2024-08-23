@@ -25,6 +25,9 @@ export const Container = styled.div`
             }
         }
     }
+    a{
+        text-decoration: none;
+    }
 `
 const clampText = css`
     text-overflow: ellipsis;

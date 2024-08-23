@@ -1,21 +1,13 @@
 import { useEffect, useState } from "react"
-import { Navigate, useLocation, useSearchParams } from "react-router-dom"
+import { Link, Navigate, useLocation, useSearchParams } from "react-router-dom"
 import { googleBooksApi } from "../../services/googleBooksApi"
-import { Thumbnail } from "../../components/SearchBox/Thumbnail/thumbnail"
+import { Thumbnail } from "../../components/SearchBox/Thumbnail/Thumbnail"
+
+import {BookState as Book} from "../BookDetail"
 
 import {Container, Subtitle, Title} from "./Books.styles"
+import { Spinner } from "../../components/SearchBox/Spinner"
 
-interface Book{
-    id: string
-    volumeInfo: {
-        title: string
-        subtitle: string
-        description: string
-        imageLinks?: {
-            thumbnail: string
-        }
-    }
-}
 
 interface BookState {
     totalItems: number
@@ -42,19 +34,25 @@ export function Books(){
     return (
         <Container>
             <h1>Resultados da sua busca</h1>
-            {books && (
+
+            {books ? (
                 <ul>
                     {books.items.map((book)=>(
                         <li key={book.id}>
-                            <Thumbnail thumbnail={book.volumeInfo.imageLinks?.thumbnail} 
-                                title={book.volumeInfo.title}
-                                bgColor="#d9d9d9"    
-                            />
-                            <Title>{book.volumeInfo.title}</Title>
-                            <Subtitle>{book.volumeInfo.subtitle}</Subtitle>
+                            <Link to={`/books/${book.id}`}>
+                                <Thumbnail thumbnail={book.volumeInfo.imageLinks?.thumbnail} 
+                                    title={book.volumeInfo.title}
+                                    bgColor="#d9d9d9"    
+                                />
+                                <Title>{book.volumeInfo.title}</Title>
+                                <Subtitle>{book.volumeInfo.subtitle}</Subtitle>
+                            </Link>
                         </li>
                     ))}
                 </ul>
+            ): (
+                <Spinner/>
+
             )}
         </Container>
     )
