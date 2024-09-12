@@ -7,6 +7,7 @@ import { Input } from "../../../components/Input";
 import { Link } from "../../../components/Link";
 import { Logo } from "../../../components/Logo";
 import { Container, FormContainer, Heading, InputContainer, LogoContainer } from "../Auth.styles";
+import { useAuth } from "../../../hooks/UseAuth";
 
 const validationSchema = z.object({
     email: z.string().min(1, {message: "Email é obrigatório"}).email({message: "Insira um Email válido"}),
@@ -20,8 +21,10 @@ export function SignIn() {
         resolver: zodResolver(validationSchema)
 })
 
+    const {signin} = useAuth()
+
     const onSubmit: SubmitHandler<SigninForm> = async(data)=>{
-        console.log(data);
+        await signin(data)
         
     } 
     return (
