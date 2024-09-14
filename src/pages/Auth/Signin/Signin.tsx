@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { isAxiosError } from "axios";
 import {SubmitHandler, useForm} from "react-hook-form"
 import {zodResolver} from "@hookform/resolvers/zod"
 import {z} from "zod"
@@ -8,6 +10,8 @@ import { Link } from "../../../components/Link";
 import { Logo } from "../../../components/Logo";
 import { Container, FormContainer, Heading, InputContainer, LogoContainer } from "../Auth.styles";
 import { useAuth } from "../../../hooks/UseAuth";
+import { AlertBanner } from "../../../components/AlertBanner";
+import { useError } from "../../../hooks/useError";
 
 const validationSchema = z.object({
     email: z.string().min(1, {message: "Email é obrigatório"}).email({message: "Insira um Email válido"}),
@@ -22,9 +26,16 @@ export function SignIn() {
 })
 
     const {signin} = useAuth()
+    const {error, handleError, clearError} = useError()
 
     const onSubmit: SubmitHandler<SigninForm> = async(data)=>{
-        await signin(data)
+        try{
+            clearError()
+            await signin(data)
+
+        }catch(error){
+            handleError(error)
+        }
         
     } 
     return (
@@ -47,7 +58,8 @@ export function SignIn() {
                         <Input id="senha" label="Senha" type="password" error={errors.password?.message} {...register("password")}/>
                     </InputContainer>
                     <Button fullWidth>Entrar</Button>
-
+                    {error && <AlertBanner variant="success" message={error}/>}
+                    
                 </form>
 
             </FormContainer>
