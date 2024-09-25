@@ -20,7 +20,7 @@ interface SignupUser {
     password: string
 }
 
-interface Session {
+export interface Session {
     user: User
     accessToken: string
     refreshToken: string
