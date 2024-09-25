@@ -12,6 +12,7 @@ import { Container, FormContainer, Heading, InputContainer, LogoContainer } from
 import { useAuth } from "../../../hooks/UseAuth";
 import { AlertBanner } from "../../../components/AlertBanner";
 import { useError } from "../../../hooks/useError";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const validationSchema = z.object({
     email: z.string().min(1, {message: "Email é obrigatório"}).email({message: "Insira um Email válido"}),
@@ -25,19 +26,28 @@ export function SignIn() {
         resolver: zodResolver(validationSchema)
 })
 
-    const {signin} = useAuth()
+    const {signin, isAuthenticated} = useAuth()
     const {error, handleError, clearError} = useError()
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    const from = location.state?.from?.pathname || "/home"
 
     const onSubmit: SubmitHandler<SigninForm> = async(data)=>{
         try{
             clearError()
             await signin(data)
 
+            navigate(from)
+
         }catch(error){
             handleError(error)
         }
-        
     } 
+
+    if(isAuthenticated){
+        return <Navigate to="/home"/>
+    }
     return (
         <Container>
             <FormContainer>
