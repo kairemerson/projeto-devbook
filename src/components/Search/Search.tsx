@@ -1,23 +1,14 @@
 import { KeyboardEvent, useState } from "react";
 import { Link } from "../Link";
 import { SearchBox } from "../SearchBox";
+import { Book, SearchResultBook } from "../SearchResultBook/SearchResultBook";
 import { Container, SearchResult, SearchResultBookContainer, SeeAllContainer } from "./Search.styles";
 import { api } from "../../services/api";
 
-interface BookItem {
-    id: string
-    volumeInfo: {
-        title: string
-        description: string
-        imageLinks?: {
-            thumbnail: string
-        }
-        authors: string
-    }
-}
+
 
 interface ResultState {
-    items: BookItem[]
+    items: Book[]
 }
 
 export function Search (){
@@ -54,7 +45,7 @@ export function Search (){
                     <SearchResultBookContainer>
                         {result && !loading ? (
                             result.items.map((item)=>(
-                                <span key={item.id}>{item.volumeInfo.title}</span>
+                                <SearchResultBook key={item.id} book={item}/>
                             ))
                         ) : (<span>carregando</span>)}
                     </SearchResultBookContainer>
