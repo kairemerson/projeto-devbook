@@ -4,6 +4,8 @@ import { SearchBox } from "../SearchBox";
 import { Book, SearchResultBook } from "../SearchResultBook/SearchResultBook";
 import { Container, SearchResult, SearchResultBookContainer, SeeAllContainer } from "./Search.styles";
 import { api } from "../../services/api";
+import { SearchLoader } from "./SearchLoader";
+import { SkeletonLoader } from "../SkeletonLoader";
 
 
 
@@ -41,13 +43,12 @@ export function Search (){
             {showResult && (
                 <SearchResult>
                     <span>resultado</span>
-
                     <SearchResultBookContainer>
                         {result && !loading ? (
                             result.items.map((item)=>(
                                 <SearchResultBook key={item.id} book={item}/>
                             ))
-                        ) : (<span>carregando</span>)}
+                        ) : (<SearchLoader/>)}
                     </SearchResultBookContainer>
                     <SeeAllContainer>
                         <Link to="/livros">Ver Todos</Link>
