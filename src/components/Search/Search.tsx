@@ -1,11 +1,12 @@
 import { KeyboardEvent, useRef, useState } from "react";
 import { Link } from "../Link";
 import { SearchBox } from "../SearchBox";
-import { Book, SearchResultBook } from "../SearchResultBook/SearchResultBook";
+import { SearchResultBook } from "../SearchResultBook/SearchResultBook";
 import { Container, SearchResult, SearchResultBookContainer, SeeAllContainer } from "./Search.styles";
-import { api } from "../../services/api";
 import { SearchLoader } from "./SearchLoader";
 import { useOutsideInteraction } from "../../hooks/useOutsideInteraction";
+import { useLazyBookQuery } from "../../hooks/useBooksQuery";
+import { Book } from "../../models/Book";
 
 interface ResultState {
     items: Book[]
@@ -14,10 +15,9 @@ interface ResultState {
 export function Search (){
 
     const [search, setSearch] = useState("")
-    const [result, setResult] = useState<ResultState | null>(null)
-    const [loading, setLoading] = useState(false)
     const [showResult, setShowResult] = useState(false)
     const searchRef = useRef<HTMLDivElement | null>(null)
+    const {fetch, data, isLoading} = useLazyBookQuery()
 
     const handleCloseResult = () => {
         setShowResult(false)
@@ -27,13 +27,9 @@ export function Search (){
 
     const handleSearch = async ()=>{
         if(search){
-            setLoading(true)
             setShowResult(true)
             const maxResults = 3
-            const {data} = await api.get(`/books?q=${search}&maxResults=${maxResults}`)
-
-            setResult(data);
-            setLoading(false)
+            fetch({search, maxResults})
         }
     }
 
@@ -49,14 +45,14 @@ export function Search (){
                 <SearchResult>
                     <span>resultado</span>
                     <SearchResultBookContainer>
-                        {result && !loading ? (
-                            result.items.map((item)=>(
+                        {data && !isLoading ? (
+                            data.items.map((item)=>(
                                 <SearchResultBook key={item.id} book={item}/>
                             ))
                         ) : (<SearchLoader/>)}
                     </SearchResultBookContainer>
                     <SeeAllContainer>
-                        <Link to="/livros">Ver Todos</Link>
+                        <Link to={`/livros?q=${search}`}>Ver Todos</Link>
                     </SeeAllContainer>
                 </SearchResult>
             )}
