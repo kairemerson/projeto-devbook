@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RequireAuth } from './components/RequireAuth/RequireAuth'
 import { Home } from './pages/Home/Home'
 import { Books } from './pages/Books'
+import { BookDetail } from './pages/BookDetail'
 
 const queryClient = new QueryClient()
 
@@ -39,6 +40,15 @@ function App() {
               element={
                 <RequireAuth>
                   <Books/>
+
+                </RequireAuth>
+              }
+            />
+            <Route 
+              path="/livros/:bookId" 
+              element={
+                <RequireAuth>
+                  <BookDetail/>
 
                 </RequireAuth>
               }

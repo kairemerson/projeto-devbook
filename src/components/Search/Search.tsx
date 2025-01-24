@@ -6,11 +6,6 @@ import { Container, SearchResult, SearchResultBookContainer, SeeAllContainer } f
 import { SearchLoader } from "./SearchLoader";
 import { useOutsideInteraction } from "../../hooks/useOutsideInteraction";
 import { useLazyBookQuery } from "../../hooks/useBooksQuery";
-import { Book } from "../../models/Book";
-
-interface ResultState {
-    items: Book[]
-}
 
 export function Search (){
 

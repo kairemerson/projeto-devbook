@@ -2,6 +2,8 @@ import { useSearchParams } from "react-router-dom";
 import { MainLayout } from "../../layouts/MainLayout";
 import { useBookQuery } from "../../hooks/useBooksQuery";
 import { BookCard } from "../../components/BookCard";
+import { BookList } from "./Books.styles";
+import { BookLoader } from "./BookLoader";
 
 export function Books () {
     const params = useSearchParams()
@@ -14,10 +16,20 @@ export function Books () {
     })
     return (
         <MainLayout>
-            <div>books</div>
-            {data && !isLoading && data.items.map((item)=>(
-                <BookCard key={item.id} book={item}/>
-            ))}
+            <div>Resultado da Busca</div>
+            <BookList>
+                {data && !isLoading ? (
+                    data.items.map((item)=>(
+                        <li key={item.id}>
+                            <BookCard book={item}/>
+    
+                        </li>
+                    ))
+                ) : (
+                    <BookLoader/>
+                )}
+
+            </BookList>
         </MainLayout>
     )
 }
