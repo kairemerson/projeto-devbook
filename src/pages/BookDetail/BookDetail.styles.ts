@@ -114,12 +114,10 @@ export const Thumbnail = styled.img`
 `
 
 export const BackgroundThumbnail = styled.img`
-    ${({theme})=>css`
         filter: blur(1rem);
         opacity: 50%;
         width: 30rem;
         position: absolute;
         right: -2rem;
         top: 2rem;
-    `}
 `

@@ -1,11 +1,13 @@
 import { useParams } from "react-router-dom";
+import reactHtmlParser from "html-react-parser";
 import { useBookDetailsQuery } from "../../hooks/useBookDetails";
 import { BackgroundThumbnail, ButtonsContainer, Container, ContentContainer, Description, DescriptionContainer, DetailColumn, DetailContainer, PublisherContainer, Thumbnail, ThumbnailContainer } from "./BookDetail.styles";
 import { MainLayout } from "../../layouts/MainLayout";
 import { Button } from "../../components/Button/Button.styles";
 import { useThumbnail } from "../../hooks/useThumbnail";
 
-import { StarIcon } from "../../icons/star.svg?react"
+import  StarIcon  from "../../icons/star.svg?react"
+import { BookDetailLoader } from "./BookDetailLoader";
 
 export function BookDetail () {
 
@@ -26,52 +28,58 @@ export function BookDetail () {
     return (
 
         <MainLayout>
-            <Container>
-                <ContentContainer>
-                    <h1>{data?.volumeInfo.title}</h1>
-                    <h2>{data?.volumeInfo.authors[0]}</h2>
 
-                    <PublisherContainer>
-                        {data && (
-                            <span>{formatDate(new Date(data.volumeInfo.publishedDate))}</span>
+            {data && !isLoading ? (
+                <Container>
+                    <ContentContainer>
+                        <h1>{data?.volumeInfo.title}</h1>
+                        <h2>{data?.volumeInfo.authors[0]}</h2>
 
-                        )}
-                        {" "} . <span>{data?.volumeInfo.publisher}</span>
-                    </PublisherContainer>
+                        <PublisherContainer>
+                            {data && (
+                                <span>{formatDate(new Date(data.volumeInfo.publishedDate))}</span>
 
-                    <DetailContainer>
-                        <DetailColumn>
-                            <strong>
-                                {data?.volumeInfo.averageRating ? data.volumeInfo.averageRating : 4}
-                                <StarIcon/>
-                            </strong>
-                            <span>Avaliações</span>
-                        </DetailColumn>
-                        <DetailColumn>
-                            <strong>
-                                {data?.volumeInfo.pageCount}
-                            </strong>
-                            <span>Páginas</span>
-                        </DetailColumn>
-                    </DetailContainer>
-                    <ButtonsContainer>
-                        <Button variant="outlined">Estou Lendo</Button>
-                        <Button variant="outlined">Quero Ler</Button>
-                        <Button variant="outlined">Já Li</Button>
-                    </ButtonsContainer>
+                            )}
+                            {" "} . <span>{data?.volumeInfo.publisher}</span>
+                        </PublisherContainer>
 
-                    <DescriptionContainer>
-                        <h3>Sobre este livro</h3>
-                        <Description>
-                            {data?.volumeInfo.description}
-                        </Description>
-                    </DescriptionContainer>
-                </ContentContainer>
-                <ThumbnailContainer>
-                    <Thumbnail src={thumbnailSrc}/>
-                    <BackgroundThumbnail src={thumbnailSrc}/>
-                </ThumbnailContainer>
-            </Container>
+                        <DetailContainer>
+                            <DetailColumn>
+                                <strong>
+                                    {data?.volumeInfo.averageRating ? data.volumeInfo.averageRating : 4}
+                                    <StarIcon/>
+                                </strong>
+                                <span>Avaliações</span>
+                            </DetailColumn>
+                            <DetailColumn>
+                                <strong>
+                                    {data?.volumeInfo.pageCount}
+                                </strong>
+                                <span>Páginas</span>
+                            </DetailColumn>
+                        </DetailContainer>
+                        <ButtonsContainer>
+                            <Button variant="outlined">Estou Lendo</Button>
+                            <Button variant="outlined">Quero Ler</Button>
+                            <Button variant="outlined">Já Li</Button>
+                        </ButtonsContainer>
+
+                        <DescriptionContainer>
+                            <h3>Sobre este livro</h3>
+                            <Description>
+                                {reactHtmlParser(data?.volumeInfo.description)}
+                            </Description>
+                        </DescriptionContainer>
+                    </ContentContainer>
+                    <ThumbnailContainer>
+                        <Thumbnail src={thumbnailSrc}/>
+                        <BackgroundThumbnail src={thumbnailSrc}/>
+                    </ThumbnailContainer>
+                </Container>
+            ) : (
+                <BookDetailLoader/>
+            )}
+            
 
         </MainLayout>
     )
