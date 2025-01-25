@@ -1,4 +1,4 @@
-type BookState = "is_reading" | "READ" | "WANTS_TO_READ"
+import { BookState } from "./BookState"
 
 export interface Book {
     id: string

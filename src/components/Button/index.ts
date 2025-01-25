@@ -1,1 +1,1 @@
-export {} from "./Button.styles"
+export {Button} from "./Button.styles"
