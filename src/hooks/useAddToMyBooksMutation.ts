@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { BookState } from "../models/BookState"
 import { MyBook } from "../models/MyBook"
 import { api } from "../services/api"
@@ -17,7 +17,32 @@ export async function  addToMyBooks({bookState, bookId}: AddToMyBookMutationArgs
 }
 
 export function useAddToMyBooksMutation() {
+    const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: async (data: AddToMyBookMutationArgs) => await addToMyBooks(data)
+        mutationFn: async (data: AddToMyBookMutationArgs) => 
+            await addToMyBooks(data),
+        onMutate: async(data) => {
+            await queryClient.cancelQueries({
+                queryKey: ["book-details", data.bookId]
+            })
+
+            const previusBookDetail = queryClient.getQueryData(["book-details", data.bookId])
+
+            queryClient.setQueryData(["book-details", data.bookId], (oldData)=>{
+                return oldData ? { ...oldData, bookState: data.bookState} : oldData
+            })
+
+            return {previusBookDetail, data}
+        },
+        onError: (error, data, context) => {
+            const bookDetailKey = ["book-details", context?.data.bookId]
+
+            queryClient.setQueryData(bookDetailKey, context?.previusBookDetail)
+        },
+        onSettled: (data) => {
+            const bookDetailKey = ["book-details", data?.bookId]
+
+            queryClient.invalidateQueries({queryKey: bookDetailKey})
+        }
     })
 }
