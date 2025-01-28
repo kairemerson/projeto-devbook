@@ -3,14 +3,13 @@ import reactHtmlParser from "html-react-parser";
 import { useBookDetailsQuery } from "../../hooks/useBookDetails";
 import { BackgroundThumbnail, ButtonsContainer, Container, ContentContainer, Description, DescriptionContainer, DetailColumn, DetailContainer, PublisherContainer, Thumbnail, ThumbnailContainer } from "./BookDetail.styles";
 import { MainLayout } from "../../layouts/MainLayout";
-import { Button } from "../../components/Button/Button.styles";
-import { useThumbnail } from "../../hooks/useThumbnail";
 
 import  StarIcon  from "../../icons/star.svg?react"
 import { BookDetailLoader } from "./BookDetailLoader";
 import { MyBookButton } from "./MyBookButton";
 import { BookState } from "../../models/BookState";
 import { useAddToMyBooksMutation } from "../../hooks/useAddToMyBooksMutation";
+import { generateThumbnailSrc } from "../../utils/generateThumbnailSrc";
 
 export function BookDetail () {
 
@@ -19,8 +18,6 @@ export function BookDetail () {
     
     const {data, isLoading} = useBookDetailsQuery({bookId: params.bookId as string})
     
-    const thumbnailSrc = useThumbnail({bookId: data?.id as string})
-
     const formatDate = (date: Date) => {
         return new Intl.DateTimeFormat("pt-Br", {
             month: "short",
@@ -84,8 +81,8 @@ export function BookDetail () {
                         </DescriptionContainer>
                     </ContentContainer>
                     <ThumbnailContainer>
-                        <Thumbnail src={thumbnailSrc}/>
-                        <BackgroundThumbnail src={thumbnailSrc}/>
+                        <Thumbnail src={generateThumbnailSrc({bookId: data.id})}/>
+                        <BackgroundThumbnail src={generateThumbnailSrc({bookId: data.id})}/>
                     </ThumbnailContainer>
                 </Container>
             ) : (

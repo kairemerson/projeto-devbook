@@ -11,6 +11,7 @@ import { RequireAuth } from './components/RequireAuth/RequireAuth'
 import { Home } from './pages/Home/Home'
 import { Books } from './pages/Books'
 import { BookDetail } from './pages/BookDetail'
+import { MyBooks } from './pages/MyBooks'
 
 const queryClient = new QueryClient()
 
@@ -49,6 +50,15 @@ function App() {
               element={
                 <RequireAuth>
                   <BookDetail/>
+
+                </RequireAuth>
+              }
+            />
+            <Route 
+              path="/meus-livros" 
+              element={
+                <RequireAuth>
+                  <MyBooks/>
 
                 </RequireAuth>
               }
