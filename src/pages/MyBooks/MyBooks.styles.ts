@@ -49,58 +49,6 @@ export const ReadingCard =styled.div`
     `}
 `
 
-export const Details = styled.div`
-    ${({theme})=>css`
-        flex: 1;
-        margin-left: ${theme.spacings.xsmall};
-    `}
-`
-
-export const ProgressBarContainer = styled.div`
-    ${({theme})=>css`
-        display: flex;
-        align-items: center;
-        span{
-            font-size: ${theme.font.sizes.small};
-            margin-left: ${theme.spacings.xxsmall};
-        }
-    `}
-`
-
-interface ProgressBarProps {
-    progress: number
-}
-
-
-export const ProgressBar = styled.div<ProgressBarProps>`
-    ${({theme, progress})=>css`
-        margin: ${theme.spacings.xsmall} 0;
-        height: 0.6rem;
-        background-color: ${theme.colors.gray};
-        border-radius: ${theme.border.radius.small};
-        flex: 1;
-        position: relative;
-
-        &::after{
-            content: "";
-            height: 0.6rem;
-            width: ${progress}%;
-            background-color: ${theme.colors.primary};
-            position: absolute;
-            border-radius: ${theme.border.radius.small};
-
-        }
-    `}
-`
-
-export const PageCountText = styled.span`
-    ${({theme})=>css`
-        display: block;
-        margin-bottom: ${theme.spacings.xsmall};
-        font-size: ${theme.font.sizes.xsmall};
-    `}
-`
-
 export const Book = styled.div`
 
     width: 12rem;
@@ -131,3 +79,4 @@ export const Thumbnail = styled.img`
             0 1px 3px 1px rgba(60, 64, 67, 0.15);
     `}
 `
+

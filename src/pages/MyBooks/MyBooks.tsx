@@ -1,8 +1,8 @@
-import { Button } from "../../components/Button";
+import { ReadingBookCard } from "../../components/ReadingBookCard";
 import { useMyBooksQuery } from "../../hooks/useMyBooksQuery";
 import { MainLayout } from "../../layouts/MainLayout";
 import { generateThumbnailSrc } from "../../utils/generateThumbnailSrc";
-import { Book, BookContainer, Container, Details, PageCountText, ProgressBar, ProgressBarContainer, ReadingCard, ReadingList, Thumbnail } from "./MyBooks.styles";
+import { Book, BookContainer, Container, ReadingList, Thumbnail } from "./MyBooks.styles";
 import { MyBooksLoader } from "./MyBooksLoader";
 
 export function MyBooks () {
@@ -19,31 +19,7 @@ export function MyBooks () {
                             
                             {data.isReading.map((item)=> (
                                 <li key={item.bookId}>
-                                    <ReadingCard>
-                                        <Thumbnail src={generateThumbnailSrc({bookId: item.bookId})} alt={item.book.volumeInfo.title}/>
-                                        
-                                        <Details>
-                                            <h2>{item.book.volumeInfo.title}</h2>
-                                            {item.book.volumeInfo.authors && (
-                                                <h3>{item.book.volumeInfo.authors[0]}</h3>
-
-                                            )}
-
-                                            <ProgressBarContainer>
-                                                <ProgressBar progress={30}/>
-                                                <span>30%</span>
-                                            </ProgressBarContainer>
-
-                                            <PageCountText>
-                                                Faltam 200 pág para terminar
-                                            </PageCountText>
-
-                                            <Button variant="outlined" color="secondary" size="small" fullWidth>
-                                                Atualizar Leitura
-                                            </Button>
-
-                                        </Details>
-                                    </ReadingCard>
+                                    <ReadingBookCard myBook={item}/>
                                 
                                 </li>
                             ))}
