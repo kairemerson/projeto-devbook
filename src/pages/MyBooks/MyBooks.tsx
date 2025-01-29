@@ -2,7 +2,8 @@ import { Button } from "../../components/Button";
 import { useMyBooksQuery } from "../../hooks/useMyBooksQuery";
 import { MainLayout } from "../../layouts/MainLayout";
 import { generateThumbnailSrc } from "../../utils/generateThumbnailSrc";
-import { Book, BookContainer, Container, Details, ReadingCard, ReadingList, Thumbnail } from "./MyBooks.styles";
+import { Book, BookContainer, Container, Details, PageCountText, ProgressBar, ProgressBarContainer, ReadingCard, ReadingList, Thumbnail } from "./MyBooks.styles";
+import { MyBooksLoader } from "./MyBooksLoader";
 
 export function MyBooks () {
 
@@ -27,6 +28,15 @@ export function MyBooks () {
                                                 <h3>{item.book.volumeInfo.authors[0]}</h3>
 
                                             )}
+
+                                            <ProgressBarContainer>
+                                                <ProgressBar progress={30}/>
+                                                <span>30%</span>
+                                            </ProgressBarContainer>
+
+                                            <PageCountText>
+                                                Faltam 200 pág para terminar
+                                            </PageCountText>
 
                                             <Button variant="outlined" color="secondary" size="small" fullWidth>
                                                 Atualizar Leitura
@@ -79,7 +89,7 @@ export function MyBooks () {
                    
                 </Container>
             ) : (
-                <span>carregando</span>
+                <MyBooksLoader/>
             )}
         </MainLayout>
     )
