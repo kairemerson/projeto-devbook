@@ -31,7 +31,7 @@ const buttonVariant = {
     outlined: (color: ButtonColors, theme: DefaultTheme)=> css`
         background-color: transparent;
         border: 0.2rem solid ${theme.colors[color]};
-        color: ${theme.colors[color]}
+        color: ${theme.colors[color]};
     `
 }
 
