@@ -2,6 +2,7 @@ import { createContext, PropsWithChildren, useState} from "react"
 import { DEV_BOOLS_SESSION_KEY } from "../../constants/storage"
 import { useSignin } from "../../hooks/useSignin"
 import { useSignup } from "../../hooks/useSignup"
+import { useMeQuery } from "../../hooks/useMeQuery"
 
 interface User {
     id: number
@@ -49,6 +50,9 @@ export function AuthProvider ({children}: PropsWithChildren){
 
     const signinMutation = useSignin()
     const signupMutation = useSignup()
+    const isAuthenticated = Boolean(session)
+
+    const {data} = useMeQuery(isAuthenticated)
 
     const signin = async (user: SigninUser): Promise<void>=>{
         await signinMutation.mutateAsync(user,{
@@ -68,7 +72,7 @@ export function AuthProvider ({children}: PropsWithChildren){
 
     }
     return(
-        <AuthContext.Provider value={{isAuthenticated: Boolean(session), user: session?.user, signin, signup, signout}}>
+        <AuthContext.Provider value={{isAuthenticated: Boolean(session), user: data, signin, signup, signout}}>
             {children}
         </AuthContext.Provider>
     )
