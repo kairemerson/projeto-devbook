@@ -13,6 +13,8 @@ export function useError(): UseError {
     const handleError = (error: unknown)=>{
         if(isAxiosError(error) && error.response?.status == 401 && error.response.data.message == "Invalid credentials"){
             setError("Email e senha incorretos")
+        }else if(isAxiosError(error) && error.response?.status == 401 && error.response.data.message == "Invalid password"){
+            setError("Senha incorreta!")
         }else{
             setError("Algo deu errado!")
         
