@@ -24,6 +24,10 @@ export const Container = styled.div<ContainerProps>`
             &:focus{
                 border: 0.2rem solid ${theme.colors.primary};
             }
+            &:disabled{
+                cursor: not-allowed;
+                background-color: #eee;
+            }
         }
 
         p{
